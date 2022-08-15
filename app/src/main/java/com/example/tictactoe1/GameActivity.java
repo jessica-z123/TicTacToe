@@ -44,12 +44,24 @@ public class GameActivity extends AppCompatActivity {
         resultsLayout = findViewById(R.id.resultsLayout);
         player1 = findViewById(R.id.player1);
         player2 = findViewById(R.id.player2);
+        /*
+        player1.setText(name1 + " (X)");
+        player2.setText(name2 + " (O)");
+        for(int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[i].length; j++) {
+                board[i][j] = ' ';
+                boxes[i][j].setImageResource(R.drawable.blank);
+                boxes[i][j].setBackgroundColor(getResources().getColor(R.color.white));
+            }
+        }
+        count = 0;
+         */
         reset();
 
         for (int i = 0; i < boxes.length; i++) {
             for(int j = 0; j < boxes[i].length; j++) {
                 ImageView box = boxes[i][j];
-                final int x = i;
+                final int x = i; // these are needed because of a weird rule
                 final int y = j;
                 box.setOnClickListener(v -> {
                     if(board[x][y] == ' ' && !gameOver) {
@@ -80,12 +92,10 @@ public class GameActivity extends AppCompatActivity {
                         playerTexts.setVisibility(View.GONE);
                         resultsLayout.setVisibility(View.VISIBLE);
                         TextView winText = findViewById(R.id.winText);
-                        String winnerStr = "";
-                        if(winner == 'X') winnerStr = name1 + " won!";
-                        else if(winner == 'O') winnerStr = name2 + " won!";
-                        else winnerStr = "The game was a tie.";
-                        winText.setText(winnerStr);
-                        String temp = name1;
+                        if(winner == 'X') winText.setText(name1 + " won!");
+                        else if(winner == 'O') winText.setText(name2 + " won!");
+                        else winText.setText("The game was a tie.");
+                        String temp = name1; // swap who is player 1 and player 2
                         name1 = name2;
                         name2 = temp;
                     }
@@ -97,6 +107,12 @@ public class GameActivity extends AppCompatActivity {
         playAgain.setOnClickListener(v -> {
            reset();
            gameOver = false;
+        });
+
+        Button quitButton = findViewById(R.id.quit);
+        quitButton.setOnClickListener(v -> {
+            Intent intent = new Intent(GameActivity.this, MainActivity.class);
+            startActivity(intent);
         });
     }
 
@@ -114,22 +130,6 @@ public class GameActivity extends AppCompatActivity {
             arrow1.setVisibility(View.GONE);
             arrow2.setVisibility(View.VISIBLE);
         }
-    }
-
-    public void reset() {
-        playerTexts.setVisibility(View.VISIBLE);
-        player1.setText(name1 + " (X)");
-        player2.setText(name2 + " (O)");
-        resultsLayout.setVisibility(View.GONE);
-        for(int i = 0; i < board.length; i++) {
-            for (int j = 0; j < board[i].length; j++) {
-                board[i][j] = ' ';
-                boxes[i][j].setImageResource(R.drawable.blank);
-                boxes[i][j].setBackgroundColor(getResources().getColor(R.color.white));
-            }
-        }
-        count = 0;
-        changePlayer(true);
     }
 
     public char checkWin() {
@@ -165,5 +165,21 @@ public class GameActivity extends AppCompatActivity {
         }
 
         return ' ';
+    }
+
+    public void reset() {
+        playerTexts.setVisibility(View.VISIBLE);
+        player1.setText(name1 + " (X)");
+        player2.setText(name2 + " (O)");
+        resultsLayout.setVisibility(View.GONE);
+        for(int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[i].length; j++) {
+                board[i][j] = ' ';
+                boxes[i][j].setImageResource(R.drawable.blank);
+                boxes[i][j].setBackgroundColor(getResources().getColor(R.color.white));
+            }
+        }
+        count = 0;
+        changePlayer(true);
     }
 }
