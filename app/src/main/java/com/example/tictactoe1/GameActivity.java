@@ -45,6 +45,7 @@ public class GameActivity extends AppCompatActivity {
         player1 = findViewById(R.id.player1);
         player2 = findViewById(R.id.player2);
         /*
+        start with this, replace with method call once reset() is created
         player1.setText(name1 + " (X)");
         player2.setText(name2 + " (O)");
         for(int i = 0; i < board.length; i++) {
