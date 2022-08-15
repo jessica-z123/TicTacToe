@@ -21,6 +21,7 @@ public class GameActivity extends AppCompatActivity {
     private String name1, name2;
     private TextView player1;
     private TextView player2;
+    private boolean gameOver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,15 +52,23 @@ public class GameActivity extends AppCompatActivity {
                 final int x = i;
                 final int y = j;
                 box.setOnClickListener(v -> {
-                    if(board[x][y] == ' ') {
+                    if(board[x][y] == ' ' && !gameOver) {
                         if (isO) {
                             board[x][y] = 'O';
                             box.setImageResource(R.drawable.o);
+                            /* isO = false;
+                            start with just this, after creating changePlayer(), replace
+                            with method call
+                             */
                             changePlayer(true);
                         }
                         else {
                             board[x][y] = 'X';
                             box.setImageResource(R.drawable.x);
+                            /* isO = true;
+                            start with just this, after creating changePlayer(), replace
+                            with method call
+                             */
                             changePlayer(false);
                         }
                         count++;
@@ -67,6 +76,7 @@ public class GameActivity extends AppCompatActivity {
 
                     char winner = checkWin();
                     if(count == 9 || winner != ' ') {
+                        gameOver = true;
                         playerTexts.setVisibility(View.GONE);
                         resultsLayout.setVisibility(View.VISIBLE);
                         TextView winText = findViewById(R.id.winText);
@@ -86,6 +96,7 @@ public class GameActivity extends AppCompatActivity {
         Button playAgain = findViewById(R.id.playAgain);
         playAgain.setOnClickListener(v -> {
            reset();
+           gameOver = false;
         });
     }
 
@@ -95,15 +106,11 @@ public class GameActivity extends AppCompatActivity {
 
         if(nextIsX) {
             isO = false;
-            player1.setTypeface(null, Typeface.BOLD);
-            player2.setTypeface(null, Typeface.NORMAL);
             arrow2.setVisibility(View.GONE);
             arrow1.setVisibility(View.VISIBLE);
         }
         else {
             isO = true;
-            player2.setTypeface(null, Typeface.BOLD);
-            player1.setTypeface(null, Typeface.NORMAL);
             arrow1.setVisibility(View.GONE);
             arrow2.setVisibility(View.VISIBLE);
         }
